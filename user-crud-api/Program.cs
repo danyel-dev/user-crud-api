@@ -1,6 +1,20 @@
+using Microsoft.EntityFrameworkCore;
+using user_crud_api.Domain;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var UserCrudConnectionString = builder.Configuration.GetConnectionString("UserCrudApiConnectionString");
+
+builder.Services.AddDbContext<UserCrudContext>(options =>
+    options.UseMySql(
+        connectionString: UserCrudConnectionString,
+        serverVersion: ServerVersion.AutoDetect(UserCrudConnectionString)
+    )
+);
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
